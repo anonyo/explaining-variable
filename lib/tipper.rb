@@ -16,7 +16,7 @@ class Tipper
   attr_reader :amount, :discount_percentage, :tip_percentage
 
   def tax
-    (amount * TAX)
+    Tax.new(amount).calculate
   end
 
   def calculate(percentage)
