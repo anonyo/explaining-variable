@@ -1,25 +1,17 @@
 class Tipper
-  TAX = 0.05
-
-  def initialize(amount:, discount_percentage: 0, tip_percentage:)
-    @amount = amount
-    @discount_percentage = discount_percentage
-    @tip_percentage = tip_percentage
+  attr_reader :amount, :discount_percentage, :tip_percentage
+  def initialize(args)
+    @amount = args[:amount]
+    @discount_percentage = args[:discount_percentage] || 0
+    @tip_percentage = args[:tip_percentage]
   end
 
   def total
-    amount + tax - calculate(discount_percentage) + calculate(tip_percentage)
+    bill_amount.with_tax_and_tip
   end
 
   private
-
-  attr_reader :amount, :discount_percentage, :tip_percentage
-
-  def tax
-    Tax.new(amount).calculate
-  end
-
-  def calculate(percentage)
-    (amount * (percentage / 100.0))
+  def bill_amount
+    BillAmount.new(amount, discount_percentage, tip_percentage)
   end
 end
